@@ -11,7 +11,6 @@ const SUPABASE_KEY = 'sb_publishable_lA2fw5O96kVM4tCe9IL9kA_02zKsxEZ';
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 // --- CONFIG TOKEN & RPC ---
-// JANGAN LUPA GANTI CA DI BAWAH INI DENGAN CA REAL LO SEBELUM PUSH
 const CLOBO_TOKEN_MINT = 'HRxaUKCfJwFHBrKnMMmVRw3vCwrBqSinMWzVPYFXpump'; 
 const MIN_HOLDING = 500000; 
 const SOLANA_RPC = 'https://mainnet.helius-rpc.com/?api-key=46e7ae99-744c-4da9-95dd-d7bb5cf40ad1'; 
@@ -25,7 +24,6 @@ const GLOBAL_CSS = `
   @keyframes mainBlurUp { from { opacity: 0; transform: translateY(40px); filter: blur(20px); } to { opacity: 1; transform: translateY(0); filter: blur(0); } }
   @keyframes footerBlurIn { from { opacity: 0; filter: blur(15px); } to { opacity: 1; filter: blur(0); } }
   
-  /* EXCLUSIVE PAGE TRANSITION */
   @keyframes pageIn {
     0% { opacity: 0; transform: translateY(10px) scale(0.98); filter: blur(10px) brightness(2); }
     50% { filter: blur(2px) brightness(1.2); }
@@ -203,7 +201,6 @@ function CloboApp() {
       </nav>
 
       <main style={styles.main}>
-        {/* NEW WRAPPER FOR SMOOTH TRANSITION */}
         <div key={currentPage} className="page-transition">
           {currentPage === 'home' ? (
             <>
@@ -216,22 +213,12 @@ function CloboApp() {
                 <button className="premium-btn" onClick={handleCopyCA} style={{backgroundColor: '#72f0a1', color: '#0d1110', border: 'none', width: '190px', padding: '12px 0', fontWeight: 'bold', fontSize: '20px', cursor: 'pointer', fontFamily: agencyFont}}>{caText}</button>
                 <a href="https://pump.fun/" target="_blank" rel="noopener noreferrer" style={{textDecoration: 'none'}}><button className="premium-btn" style={{backgroundColor: '#72f0a1', color: '#0d1110', border: 'none', width: '190px', padding: '12px 0', fontWeight: 'bold', fontSize: '20px', cursor: 'pointer', fontFamily: agencyFont}}>Buy Clobo</button></a>
               </div>
-
               <h2 className="glitch-hover" style={{ color: '#72f0a1', fontSize: '48px', fontFamily: "'Silkscreen'", margin: '20px 0 30px 0', letterSpacing: '4px' }}>CHARACTER SHEET</h2>
-
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '20px', width: '100%', maxWidth: '800px', marginTop: '10px' }}>
-                <div style={{ width: '100%', animation: 'artFloat 6s ease-in-out infinite' }}>
-                  <img src="/Art.png" alt="Clobo Art 1" style={artImageStyle} />
-                </div>
-                <div style={{ width: '100%', animation: 'artFloat 6s ease-in-out infinite', animationDelay: '0.3s' }}>
-                  <img src="/Art 2.png" alt="Clobo Art 2" style={artImageStyle} />
-                </div>
-                <div style={{ width: '100%', animation: 'artFloat 6s ease-in-out infinite', animationDelay: '0.6s' }}>
-                  <img src="/Art 3.png" alt="Clobo Art 3" style={artImageStyle} />
-                </div>
-                <div style={{ width: '100%', animation: 'artFloat 6s ease-in-out infinite', animationDelay: '0.9s' }}>
-                  <img src="/Art 4.png" alt="Clobo Art 4" style={artImageStyle} />
-                </div>
+                <div style={{ width: '100%', animation: 'artFloat 6s ease-in-out infinite' }}><img src="/Art.png" alt="Clobo Art 1" style={artImageStyle} /></div>
+                <div style={{ width: '100%', animation: 'artFloat 6s ease-in-out infinite', animationDelay: '0.3s' }}><img src="/Art 2.png" alt="Clobo Art 2" style={artImageStyle} /></div>
+                <div style={{ width: '100%', animation: 'artFloat 6s ease-in-out infinite', animationDelay: '0.6s' }}><img src="/Art 3.png" alt="Clobo Art 3" style={artImageStyle} /></div>
+                <div style={{ width: '100%', animation: 'artFloat 6s ease-in-out infinite', animationDelay: '0.9s' }}><img src="/Art 4.png" alt="Clobo Art 4" style={artImageStyle} /></div>
               </div>
             </>
           ) : (
@@ -267,7 +254,7 @@ function CloboApp() {
 export default function App() {
   return (
     <PrivyProvider
-      appId="cmkbw3zht05jil10cm0bngb9u"
+      appId="cmke399v0006zl20cczhcpu5d" // PASTIKAN ID INI YANG TERPASANG
       config={{ 
         loginMethods: ['wallet'],
         appearance: { theme: 'dark', accentColor: '#72f0a1', walletChainType: 'solana-only' },

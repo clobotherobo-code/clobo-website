@@ -1,5 +1,23 @@
-body {
+* {
   margin: 0;
   padding: 0;
-  background-color: #0d1110;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #060807;
+  color: #d1d1d1;
+  overflow-x: hidden;
+}
+
+/* Scrollbar Styling agar terlihat Cyber */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #060807;
+}
+::-webkit-scrollbar-thumb {
+  background: #72f0a1;
+  border-radius: 10px;
 }
