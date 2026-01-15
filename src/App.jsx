@@ -11,6 +11,7 @@ const SUPABASE_KEY = 'sb_publishable_lA2fw5O96kVM4tCe9IL9kA_02zKsxEZ';
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 // --- CONFIG TOKEN & RPC ---
+// JANGAN LUPA GANTI CA DI BAWAH INI DENGAN CA REAL LO SEBELUM PUSH
 const CLOBO_TOKEN_MINT = 'HRxaUKCfJwFHBrKnMMmVRw3vCwrBqSinMWzVPYFXpump'; 
 const MIN_HOLDING = 500000; 
 const SOLANA_RPC = 'https://mainnet.helius-rpc.com/?api-key=46e7ae99-744c-4da9-95dd-d7bb5cf40ad1'; 
@@ -24,7 +25,21 @@ const GLOBAL_CSS = `
   @keyframes mainBlurUp { from { opacity: 0; transform: translateY(40px); filter: blur(20px); } to { opacity: 1; transform: translateY(0); filter: blur(0); } }
   @keyframes footerBlurIn { from { opacity: 0; filter: blur(15px); } to { opacity: 1; filter: blur(0); } }
   
-  /* NEW: SMOOTH MODAL ANIMATIONS */
+  /* EXCLUSIVE PAGE TRANSITION */
+  @keyframes pageIn {
+    0% { opacity: 0; transform: translateY(10px) scale(0.98); filter: blur(10px) brightness(2); }
+    50% { filter: blur(2px) brightness(1.2); }
+    100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0) brightness(1); }
+  }
+
+  .page-transition {
+    animation: pageIn 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
   @keyframes overlayFade { from { opacity: 0; backdrop-filter: blur(0px); } to { opacity: 1; backdrop-filter: blur(8px); } }
   @keyframes modalReveal { 
     from { opacity: 0; transform: scale(0.9) translateY(30px); filter: blur(10px); } 
@@ -130,13 +145,8 @@ function CloboApp() {
     navbar: { width: '100%', position: 'fixed', top: 0, zIndex: 100, display: 'flex', justifyContent: 'center', background: 'linear-gradient(to bottom, rgba(6, 8, 7, 0.95) 0%, rgba(6, 8, 7, 0.4) 70%, transparent 100%)', backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)', padding: '10px 0', opacity: 0, animation: 'navBlurDown 1.2s ease-out forwards' },
     navContent: { width: '92%', maxWidth: '1300px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', position: 'relative' },
     navLinks: { position: 'absolute', left: '50%', transform: 'translateX(-50%)', display: 'flex', gap: '40px', fontSize: '16px', letterSpacing: '1.5px' },
-    
-    // PADDING MAIN
     main: { position: 'relative', zIndex: 5, flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', textAlign: 'center', padding: '120px 20px 300px 20px', maxWidth: '1200px', margin: '0 auto', width: '100%', opacity: 0, animation: 'mainBlurUp 1.5s cubic-bezier(0.2, 0.8, 0.2, 1) 0.5s forwards' },
-    
     footer: { width: '100%', position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 200, padding: '25px 0', display: 'flex', justifyContent: 'center', alignItems: 'center', background: 'linear-gradient(to top, rgba(6, 8, 7, 0.95) 0%, rgba(6, 8, 7, 0.4) 70%, transparent 100%)', backdropFilter: 'blur(15px)', WebkitBackdropFilter: 'blur(15px)', opacity: 0, animation: 'footerBlurIn 1s ease-out 1.5s forwards' },
-    
-    // UPDATED MODAL STYLES
     modalOverlay: { position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(0,0,0,0.85)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 1000, animation: 'overlayFade 0.4s ease-out forwards' },
     modalBox: { backgroundColor: '#161d1b', width: '90%', maxWidth: '450px', padding: '40px 20px', borderRadius: '25px', border: '4px solid #72f0a1', textAlign: 'center', boxShadow: '0 0 50px rgba(114, 240, 161, 0.2)', animation: 'modalReveal 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards' }
   };
@@ -193,54 +203,55 @@ function CloboApp() {
       </nav>
 
       <main style={styles.main}>
-        {currentPage === 'home' ? (
-          <>
-            <img src="/Nama Project.png" className="glitch-hover" alt="CLOBO" style={{width: '90%', maxWidth: '700px', marginTop: '-15px', animation: 'logoPulse 3s infinite'}} />
-            <h2 className="glitch-hover" style={{ color: '#72f0a1', fontSize: '64px', fontFamily: "'Silkscreen'", margin: '0', lineHeight: '0.7', marginTop: '-85px', animation: 'logoPulse 3s infinite', letterSpacing: '6px' }}>BEEP BOOP BEEP BOOP</h2>
-            <p style={{color: '#a0a8a4', fontSize: '18px', maxWidth: '950px', marginTop: '40px', lineHeight: '1.6', textAlign: 'center'}}>
-              <span style={{color: '#72f0a1'}}>Clobo the Robo emerged from the ruins of a brutal market war,</span> a lone steel survivor carrying the last spark pill of hope into a ravaged digital world trapped in an unforgiving bear market, forged for battle but driven by purpose. Clobo now roams the fractured network repairing what was broken, reigniting confidence where fear once ruled, and reminding all who cross his path that even in the coldest cycles, resilience can spark a new dawn.
-            </p>
-            <div style={{display: 'flex', gap: '20px', marginTop: '30px', marginBottom: '40px'}}>
-              <button className="premium-btn" onClick={handleCopyCA} style={{backgroundColor: '#72f0a1', color: '#0d1110', border: 'none', width: '190px', padding: '12px 0', fontWeight: 'bold', fontSize: '20px', cursor: 'pointer', fontFamily: agencyFont}}>{caText}</button>
-              <a href="https://pump.fun/" target="_blank" rel="noopener noreferrer" style={{textDecoration: 'none'}}><button className="premium-btn" style={{backgroundColor: '#72f0a1', color: '#0d1110', border: 'none', width: '190px', padding: '12px 0', fontWeight: 'bold', fontSize: '20px', cursor: 'pointer', fontFamily: agencyFont}}>Buy Clobo</button></a>
-            </div>
+        {/* NEW WRAPPER FOR SMOOTH TRANSITION */}
+        <div key={currentPage} className="page-transition">
+          {currentPage === 'home' ? (
+            <>
+              <img src="/Nama Project.png" className="glitch-hover" alt="CLOBO" style={{width: '90%', maxWidth: '700px', marginTop: '-15px', animation: 'logoPulse 3s infinite'}} />
+              <h2 className="glitch-hover" style={{ color: '#72f0a1', fontSize: '64px', fontFamily: "'Silkscreen'", margin: '0', lineHeight: '0.7', marginTop: '-85px', animation: 'logoPulse 3s infinite', letterSpacing: '6px' }}>BEEP BOOP BEEP BOOP</h2>
+              <p style={{color: '#a0a8a4', fontSize: '18px', maxWidth: '950px', marginTop: '40px', lineHeight: '1.6', textAlign: 'center'}}>
+                <span style={{color: '#72f0a1'}}>Clobo the Robo emerged from the ruins of a brutal market war,</span> a lone steel survivor carrying the last spark pill of hope into a ravaged digital world trapped in an unforgiving bear market, forged for battle but driven by purpose. Clobo now roams the fractured network repairing what was broken, reigniting confidence where fear once ruled, and reminding all who cross his path that even in the coldest cycles, resilience can spark a new dawn.
+              </p>
+              <div style={{display: 'flex', gap: '20px', marginTop: '30px', marginBottom: '40px'}}>
+                <button className="premium-btn" onClick={handleCopyCA} style={{backgroundColor: '#72f0a1', color: '#0d1110', border: 'none', width: '190px', padding: '12px 0', fontWeight: 'bold', fontSize: '20px', cursor: 'pointer', fontFamily: agencyFont}}>{caText}</button>
+                <a href="https://pump.fun/" target="_blank" rel="noopener noreferrer" style={{textDecoration: 'none'}}><button className="premium-btn" style={{backgroundColor: '#72f0a1', color: '#0d1110', border: 'none', width: '190px', padding: '12px 0', fontWeight: 'bold', fontSize: '20px', cursor: 'pointer', fontFamily: agencyFont}}>Buy Clobo</button></a>
+              </div>
 
-            {/* BLUEPRINT TITLE */}
-            <h2 className="glitch-hover" style={{ color: '#72f0a1', fontSize: '48px', fontFamily: "'Silkscreen'", margin: '20px 0 30px 0', letterSpacing: '4px' }}>CHARACTER SHEET</h2>
+              <h2 className="glitch-hover" style={{ color: '#72f0a1', fontSize: '48px', fontFamily: "'Silkscreen'", margin: '20px 0 30px 0', letterSpacing: '4px' }}>CHARACTER SHEET</h2>
 
-            {/* GRID ART SECTION (2x2) */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '20px', width: '100%', maxWidth: '800px', marginTop: '10px' }}>
-              <div style={{ width: '100%', animation: 'artFloat 6s ease-in-out infinite' }}>
-                <img src="/Art.png" alt="Clobo Art 1" style={artImageStyle} />
-              </div>
-              <div style={{ width: '100%', animation: 'artFloat 6s ease-in-out infinite', animationDelay: '0.3s' }}>
-                <img src="/Art 2.png" alt="Clobo Art 2" style={artImageStyle} />
-              </div>
-              <div style={{ width: '100%', animation: 'artFloat 6s ease-in-out infinite', animationDelay: '0.6s' }}>
-                <img src="/Art 3.png" alt="Clobo Art 3" style={artImageStyle} />
-              </div>
-              <div style={{ width: '100%', animation: 'artFloat 6s ease-in-out infinite', animationDelay: '0.9s' }}>
-                <img src="/Art 4.png" alt="Clobo Art 4" style={artImageStyle} />
-              </div>
-            </div>
-          </>
-        ) : (
-          <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%'}}>
-            <h1 className="glitch-hover" style={{fontSize: '48px', margin: '0', color: 'white', fontWeight: 'bold'}}>Get A Gas</h1>
-            <div style={{color: '#72f0a1', fontSize: '14px', marginBottom: '5px'}}>Round #1 Active</div>
-            <div style={{fontFamily: "'Silkscreen'", fontSize: '24px', color: '#72f0a1', marginBottom: '30px'}}>{6 - claimedCount} / 6 Jerry Cans</div>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '20px', maxWidth: '550px', width: '100%', marginBottom: '50px' }}>
-              {canStatus.map((isClaimed, i) => (
-                <div key={i} style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-                  <div style={{backgroundColor: '#1c2321', borderRadius: '15px', aspectRatio: '1/1', width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '3px solid #72f0a1', position: 'relative', borderColor: isClaimed ? '#444' : '#72f0a1'}}>
-                    <img src="/Fuel.png" alt="Fuel" style={{width: '70px', opacity: isClaimed ? 0.2 : 1}} />
-                  </div>
-                  <button className="premium-btn" onClick={() => handleCollect(i)} disabled={isClaimed || hasUserClaimed} style={{backgroundColor: (isClaimed || hasUserClaimed) ? '#444' : '#72f0a1', color: '#0d1110', border: 'none', width: '100%', padding: '8px 0', fontSize: '16px', fontWeight: 'bold', cursor: 'pointer', marginTop: '10px', borderRadius: '10px'}}>{isClaimed ? 'Sold Out' : (hasUserClaimed ? 'Participated' : 'Collect')}</button>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '20px', width: '100%', maxWidth: '800px', marginTop: '10px' }}>
+                <div style={{ width: '100%', animation: 'artFloat 6s ease-in-out infinite' }}>
+                  <img src="/Art.png" alt="Clobo Art 1" style={artImageStyle} />
                 </div>
-              ))}
+                <div style={{ width: '100%', animation: 'artFloat 6s ease-in-out infinite', animationDelay: '0.3s' }}>
+                  <img src="/Art 2.png" alt="Clobo Art 2" style={artImageStyle} />
+                </div>
+                <div style={{ width: '100%', animation: 'artFloat 6s ease-in-out infinite', animationDelay: '0.6s' }}>
+                  <img src="/Art 3.png" alt="Clobo Art 3" style={artImageStyle} />
+                </div>
+                <div style={{ width: '100%', animation: 'artFloat 6s ease-in-out infinite', animationDelay: '0.9s' }}>
+                  <img src="/Art 4.png" alt="Clobo Art 4" style={artImageStyle} />
+                </div>
+              </div>
+            </>
+          ) : (
+            <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%'}}>
+              <h1 className="glitch-hover" style={{fontSize: '48px', margin: '0', color: 'white', fontWeight: 'bold'}}>Get A Gas</h1>
+              <div style={{color: '#72f0a1', fontSize: '14px', marginBottom: '5px'}}>Round #1 Active</div>
+              <div style={{fontFamily: "'Silkscreen'", fontSize: '24px', color: '#72f0a1', marginBottom: '30px'}}>{6 - claimedCount} / 6 Jerry Cans</div>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '20px', maxWidth: '550px', width: '100%', marginBottom: '50px' }}>
+                {canStatus.map((isClaimed, i) => (
+                  <div key={i} style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+                    <div style={{backgroundColor: '#1c2321', borderRadius: '15px', aspectRatio: '1/1', width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '3px solid #72f0a1', position: 'relative', borderColor: isClaimed ? '#444' : '#72f0a1'}}>
+                      <img src="/Fuel.png" alt="Fuel" style={{width: '70px', opacity: isClaimed ? 0.2 : 1}} />
+                    </div>
+                    <button className="premium-btn" onClick={() => handleCollect(i)} disabled={isClaimed || hasUserClaimed} style={{backgroundColor: (isClaimed || hasUserClaimed) ? '#444' : '#72f0a1', color: '#0d1110', border: 'none', width: '100%', padding: '8px 0', fontSize: '16px', fontWeight: 'bold', cursor: 'pointer', marginTop: '10px', borderRadius: '10px'}}>{isClaimed ? 'Sold Out' : (hasUserClaimed ? 'Participated' : 'Collect')}</button>
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
-        )}
+          )}
+        </div>
       </main>
 
       <footer style={styles.footer}>
