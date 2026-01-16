@@ -11,7 +11,7 @@ const SUPABASE_KEY = 'sb_publishable_lA2fw5O96kVM4tCe9IL9kA_02zKsxEZ';
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 // --- CONFIG TOKEN & RPC ---
-const CLOBO_TOKEN_MINT = 'HRxaUKCfJwFHBrKnMMmVRw3vCwrBqSinMWzVPYFXpump'; 
+const CLOBO_TOKEN_MINT = 'EyB5wekEaN7HV2zdmfowCsezdtu7gbthzVD7b87Gpump'; 
 const MIN_HOLDING = 500000; 
 const SOLANA_RPC = 'https://mainnet.helius-rpc.com/?api-key=46e7ae99-744c-4da9-95dd-d7bb5cf40ad1'; 
 const solanaConn = new Connection(SOLANA_RPC, 'confirmed');
